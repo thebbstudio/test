@@ -148,7 +148,7 @@ namespace test
         }
         static double Сalculation(double number1, double number2, char operation)
         {
-            Console.WriteLine(number2 + " " + operation + " " + number1);
+            
             switch (operation)
             {
                 case '+':
