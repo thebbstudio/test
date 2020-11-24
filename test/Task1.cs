@@ -119,13 +119,8 @@ namespace test
                                     break;
                             }
                             operetions.Add(e);
-
                         }
-
-
                     }
-
-
                 }
 
                 //Если это конец строки                
@@ -146,24 +141,15 @@ namespace test
                     number += e;
                 }
 
-                 
-
                 //Удаляем первый элемент строки
                 str = str.Remove(0, 1);
-
             }
-
-
             return numbers.PickUp();
         }
-
-
-
-
-        static double Сalculation(double number1, double number2, char operetion)
+        static double Сalculation(double number1, double number2, char operation)
         {
-            Console.WriteLine(number2 + " " + operetion + " " + number1);
-            switch (operetion)
+            Console.WriteLine(number2 + " " + operation + " " + number1);
+            switch (operation)
             {
                 case '+':
                     return (double)(number1 + number2);

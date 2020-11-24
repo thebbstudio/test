@@ -23,7 +23,7 @@ namespace test.Models
             if (!IsEmpty)
             {
                 var item = items.LastOrDefault();
-                items.Remove(item);
+                items.RemoveAt(items.Count-1);
                 return item;
             }
             else
@@ -52,7 +52,7 @@ namespace test.Models
             if (!IsEmpty)
             {
                 var item = items.LastOrDefault();
-                items.Remove(item);
+                items.RemoveAt(items.Count - 1);
             }
             else
             {
