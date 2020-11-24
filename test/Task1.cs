@@ -51,61 +51,65 @@ namespace test
                         numbers.Add(Convert.ToDouble(number));
                         number = "";
                     }
-                    else if (number == "-")
-                    {
-                        while (operetions.Look() != '(' || operetions.IsEmpty)
-                            numbers.Add(Сalculation(numbers.PickUp(), numbers.PickUp(), operetions.PickUp()));
-                        operetions.Add('+');
-                        goto aute;
-                    }
 
-
-                    //Если минус то два путя: просто добавим - к числу 
-                    //или если начало строки или перед скобкой добавим вместо него + в стек
-                    if (e == '-')
+                    if (e == '+')
                     {
-                        if (!(numbers.IsEmpty))
-                            operetions.Add('+');
-                        number += '-';
-                    }
-
-                    //Добавдяем элемент если есек пуст, до этого была скобка или этот элемент скобка
-                    if (operetions.IsEmpty || operetions.Look() == '(' || e == '(')
-                    {
-                        operetions.Add(e);
-                    }
-                    //Если + или - то мы выполняем предидущие операции пока стек с операциями не будет пуст 
-                    //или не встретим скобку
-                    else if (e == '+')
-                    {
-                        while (operetions.Look() != '(' || !operetions.IsEmpty)
+                        while(!operetions.IsEmpty && operetions.Look()=='(')
                         {
                             numbers.Add(Сalculation(numbers.PickUp(), numbers.PickUp(), operetions.PickUp()));
                         }
                         operetions.Add(e);
                     }
-                    //Добавляем операцию, если это умножить или разделить и до этого был плюс или минус 
-                    else if ((e == '*' || e == '/') && (operetions.Look() == '+' || operetions.Look() == '-' || operetions.Look() != '('))
-                        operetions.Add(e);
-
-                    else if (e == '*' || e == '/')
+                    else if (e == '(')
                     {
-                        while (operetions.IsEmpty || operetions.Look() == '(' && (operetions.Look() == '+' || operetions.Look() == '-'))
-                            numbers.Add(Сalculation(numbers.PickUp(), numbers.PickUp(), operetions.PickUp()));
-                        operetions.Add(e);
+                        operetions.Add('(');
                     }
-                    //Если мы здесь значит осталась скобка
-                    else
+                    else if(e == '*' || e == '/')
                     {
-                        while (operetions.Look() != '(')
+                        if(operetions.IsEmpty || operetions.Look() == '+' || operetions.Look() == '-' || operetions.Look() == '(')
+                        {
+                            operetions.Add(e);
+                        }
+                        else
+                        {
+                            while (!operetions.IsEmpty && operetions.Look() == '(')
+                            {
+                                numbers.Add(Сalculation(numbers.PickUp(), numbers.PickUp(), operetions.PickUp()));
+                            }
+                            operetions.Add(e);
+                        }
+                    }
+                    else if (e == ')')
+                    {
+                        while(operetions.Look() != '(')
                         {
                             numbers.Add(Сalculation(numbers.PickUp(), numbers.PickUp(), operetions.PickUp()));
                         }
                         operetions.Delete();
                     }
+                    else
+                    {
+                        if(operetions.Look()=='(' || numbers.IsEmpty)
+                        {
+                            number += '-';
+                        }
+                        else
+                        {
+                            while (!operetions.IsEmpty && operetions.Look() == '(')
+                            {
+                                numbers.Add(Сalculation(numbers.PickUp(), numbers.PickUp(), operetions.PickUp()));
+                            }
+                            operetions.Add(e);
+
+                        }
+
+
+                    }
+
 
                 }
                 //Если это конец строки
+                //Обязательно
                 else if (e == '!')
                 {
                     if (number.Length != 0)
@@ -122,7 +126,7 @@ namespace test
                     number += e;
                 }
 
-                 aute:
+                 
 
                 //Удаляем первый элемент строки
                 str = str.Remove(0, 1);
