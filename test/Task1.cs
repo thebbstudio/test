@@ -52,18 +52,26 @@ namespace test
                         number = "";
                     }
 
+                    //Плюсик
                     if (e == '+')
                     {
-                        while(!operetions.IsEmpty && operetions.Look()=='(')
+                        while (!operetions.IsEmpty)
                         {
-                            numbers.Add(Сalculation(numbers.PickUp(), numbers.PickUp(), operetions.PickUp()));
+                            if (!(operetions.Look() == '('))
+                            {
+                                numbers.Add(Сalculation(numbers.PickUp(), numbers.PickUp(), operetions.PickUp()));
+                            }
+                            else
+                                break;
                         }
                         operetions.Add(e);
                     }
+                    //Открывающая скобка
                     else if (e == '(')
                     {
                         operetions.Add('(');
                     }
+                    //Умножить разделить
                     else if(e == '*' || e == '/')
                     {
                         if(operetions.IsEmpty || operetions.Look() == '+' || operetions.Look() == '-' || operetions.Look() == '(')
@@ -79,6 +87,7 @@ namespace test
                             operetions.Add(e);
                         }
                     }
+                    //Закрывающая скобка
                     else if (e == ')')
                     {
                         while(operetions.Look() != '(')
@@ -87,17 +96,27 @@ namespace test
                         }
                         operetions.Delete();
                     }
+                    //Минус
                     else
                     {
-                        if(operetions.Look()=='(' || numbers.IsEmpty)
+                        if (numbers.IsEmpty )
                         {
                             number += '-';
                         }
+                        else if(operetions.IsEmpty)
+                        {
+                            operetions.Add(e);
+                        }
                         else
                         {
-                            while (!operetions.IsEmpty && operetions.Look() == '(')
+                            while (!operetions.IsEmpty)
                             {
-                                numbers.Add(Сalculation(numbers.PickUp(), numbers.PickUp(), operetions.PickUp()));
+                                if (!(operetions.Look() == '('))
+                                {
+                                    numbers.Add(Сalculation(numbers.PickUp(), numbers.PickUp(), operetions.PickUp()));
+                                }
+                                else
+                                    break;
                             }
                             operetions.Add(e);
 
@@ -108,8 +127,8 @@ namespace test
 
 
                 }
-                //Если это конец строки
-                //Обязательно
+
+                //Если это конец строки                
                 else if (e == '!')
                 {
                     if (number.Length != 0)
@@ -120,6 +139,7 @@ namespace test
                     while (!operetions.IsEmpty)
                         numbers.Add(Сalculation(numbers.PickUp(), numbers.PickUp(), operetions.PickUp()));
                 }
+
                 //Это либо число, либо запятая
                 else
                 {
@@ -203,6 +223,8 @@ namespace test
             else
                 return "Неверное начало уровнения" + str[i];
 
+            if (numbers.Any(numberTest => numberTest == previousСharacter))
+                number += previousСharacter;
 
 
 
@@ -257,7 +279,11 @@ namespace test
                 
             }
 
-            i++;
+            //Если мы не обнуляли число, то проверим может ли преобразрваться в дабл из строки
+            if(number.Length != 0 )
+                if(!double.TryParse(number, out double resultParse))
+                    return "Число не преобразованно в double " + number;
+
 
             return "";
         }
